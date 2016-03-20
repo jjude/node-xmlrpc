@@ -19,16 +19,26 @@ vows.describe('Client').addBatch({
         return client.options
       }
     , 'contains the standard headers' : function (topic) {
-        var headers = {
-          'User-Agent': 'NodeJS XML-RPC Client'
+      var headers = {
+          'User-Agent': 'NodeJS XML-RPC Client/' + require('./../package').version
         , 'Content-Type': 'text/xml'
         , 'Accept': 'text/xml'
         , 'Accept-Charset': 'UTF8'
         , 'Connection': 'Keep-Alive'
-        }
-        assert.deepEqual(topic, { host: 'localhost', port: 9999, path: '/', url: 'http://localhost:9999/', method: 'POST', headers: headers })
-      }
+      };
+      assert.deepEqual(topic, {
+        host: 'localhost',
+        port: 9999,
+        path: '/',
+        url: 'http://localhost:9999/',
+        method: 'POST',
+        headers: headers,
+        keepAlive: 0,
+        gzip: false,
+        deflate: false
+      });
     }
+  }
     // Test passing string URI for options
   , 'with a string URI for options' : {
       topic: function () {
@@ -56,7 +66,17 @@ vows.describe('Client').addBatch({
         , 'Accept-Charset' : 'UTF8'
         , 'Connection': 'Keep-Alive'
         }
-        assert.deepEqual(topic, { host: 'localhost', url: 'http://localhost:9999/', port: 9999, path: '/', method: 'POST', headers: headers })
+        assert.deepEqual(topic, {
+          host: 'localhost',
+          url: 'http://localhost:9999/',
+          port: 9999,
+          path: '/',
+          method: 'POST',
+          headers: headers,
+          keepAlive: 0,
+          gzip: false,
+          deflate: false
+        });
       }
     }
     // Test passing HTTP Basic authentication credentials

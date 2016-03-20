@@ -1,3 +1,9 @@
+## 2.0.0 / 2016-03-20
+
+ * Http client is now using SuperAgent.
+ * Support for GZip/deflate compression.
+ * Support for Keep-Alive.
+
 ## 1.3.1 / 2015-05-23
 
  * Adds option to specify xml encoding.
@@ -117,4 +123,3 @@
 ## 0.6.0 / 2011-05-18
 
   * Initial release to NPM. Considered stable enough for public use.
-
