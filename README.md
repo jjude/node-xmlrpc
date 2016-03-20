@@ -1,5 +1,8 @@
 ## The What
 
+(This is a fork of https://github.com/baalexander/node-xmlrpc for supporting
+http compression and keep alive connections.)
+
 The xmlrpc module is a pure JavaScript XML-RPC server and client for node.js.
 
 Pure JavaScript means that the [XML parsing](https://github.com/isaacs/sax-js)
@@ -15,7 +18,7 @@ method responses, or as both.
 ### To Install
 
 ```bash
-npm install xmlrpc
+npm install maniajs-xmlrpc
 ```
 
 ### To Use
@@ -232,4 +235,3 @@ Released under the MIT license. See the LICENSE file for the complete wording.
 Thank you to all [the
 authors](https://github.com/baalexander/node-xmlrpc/graphs/contributors) and
 everyone who has filed an issue to help make xmlrpc better.
-
