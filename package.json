@@ -30,7 +30,7 @@
     "vows": "0.7.x"
   },
   "scripts": {
-    "test": "vows 'test/*.js'"
+    "test": "vows test/*.js"
   },
   "engines": {
     "node": ">=0.8",
@@ -38,4 +38,3 @@
   },
   "license": "MIT"
 }
-
