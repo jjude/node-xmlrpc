@@ -23,6 +23,7 @@
   },
   "main": "./lib/xmlrpc.js",
   "dependencies": {
+    "agentkeepalive": "^2.0.5",
     "cookiejar": "^2.0.6",
     "sax": "1.2.x",
     "superagent": "^1.8.1",
