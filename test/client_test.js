@@ -1,11 +1,12 @@
 var vows   = require('vows')
   , assert = require('assert')
   , http   = require('http')
+  , zlib   = require('zlib')
   , Client = require('../lib/client')
-  , fs     = require('fs')
+  , fs     = require('fs');
 
-const VALID_RESPONSE = fs.readFileSync(__dirname + '/fixtures/good_food/string_response.xml')
-const BROKEN_XML = fs.readFileSync(__dirname + '/fixtures/bad_food/broken_xml.xml')
+const VALID_RESPONSE = fs.readFileSync(__dirname + '/fixtures/good_food/string_response.xml');
+const BROKEN_XML = fs.readFileSync(__dirname + '/fixtures/bad_food/broken_xml.xml');
 
 vows.describe('Client').addBatch({
   //////////////////////////////////////////////////////////////////////
@@ -34,8 +35,7 @@ vows.describe('Client').addBatch({
         method: 'POST',
         headers: headers,
         keepAlive: 0,
-        gzip: false,
-        deflate: false
+        gzip: false
       });
     }
   }
@@ -74,8 +74,7 @@ vows.describe('Client').addBatch({
           method: 'POST',
           headers: headers,
           keepAlive: 0,
-          gzip: false,
-          deflate: false
+          gzip: false
         });
       }
     }
@@ -201,6 +200,35 @@ vows.describe('Client').addBatch({
     , 'contains the array' : function (error, value) {
         assert.isNull(error)
         assert.deepEqual(value, ['system.listMethods', 'system.methodSignature', 'xmlrpc_dialect'])
+      }
+    }
+  , 'with gzip encoded request and response (and utf8)' : {
+      topic: function () {
+        var that = this;
+        http.createServer(function (request, response) {
+          response.writeHead(200, {'Content-Type': 'text/xml', 'Content-Encoding': 'gzip'});
+          var data = '<?xml version="2.0" encoding="UTF-8"?>'
+            + '<methodResponse>'
+            + '<params>'
+            + '<param><value><string>here is mr. Snowman: ☃</string></value></param>'
+            + '</params>'
+            + '</methodResponse>';
+          zlib.gzip(data, function (err, buffer) {
+            response.write(buffer);
+            response.end();
+          });
+        }).listen(9190, 'localhost', function() {
+          var client = new Client({
+            host: 'localhost',
+            port: 9190,
+            gzip: 'both'
+          }, false);
+          client.methodCall('listMethods', null, that.callback);
+        })
+      }
+    , 'contains the correct string' : function (error, value) {
+        assert.isNull(error);
+        assert.deepEqual(value, 'here is mr. Snowman: ☃');
       }
     }
   , 'with a utf-8 encoding' : {
